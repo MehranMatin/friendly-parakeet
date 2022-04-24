@@ -27,7 +27,7 @@ THEN the password is either displayed in an alert or written to the page
 https://mehranmatin.github.io/friendly-parakeet/
 
 ## Password Generator Screenshot
-![password generator demo screenshot](assets/images/demo.png)
+![password generator demo screenshot](assets/images/mock.png)
 
 ## Refactored By
 Mehran M.
