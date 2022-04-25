@@ -1,10 +1,12 @@
 // Assignment code here
 var userInputs = {
-  criteriaPasswordLength: "",
-  criteriaLowercase: false,
-  criteriaUppercase: false,
-  criteriaNumeric: false,
-  criteriaSpecialChar: false,
+  criteriaPromptObj: {
+    criteriaPasswordLength: "",
+    criteriaLowercase: false,
+    criteriaUppercase: false,
+    criteriaNumeric: false,
+    criteriaSpecialChar: false,
+  },
   criteriaArr: function () {
     // possible way to store char chosen types
   },
@@ -23,10 +25,11 @@ console.log(userInputs);
 /* GENERATE PASSWORD */
 var generatePassword = function () {
   window.alert("Decide which types of characters to include in your generated password.");
+
   // Prompt user for desired password length
   do {
     var passwordLength = parseInt(window.prompt("First, choose a password length between 8-128 characters.", 8));
-    userInputs.criteriaPasswordLength = passwordLength;
+    userInputs.criteriaPromptObj.criteriaPasswordLength = passwordLength;
   } while (userInputs.criteriaPasswordLength < 8 || userInputs.criteriaPasswordLength > 128);
 
   // Prompts for character types criteria
@@ -39,6 +42,10 @@ var generatePassword = function () {
   userInputs.criteriaUppercase = includeUppercase;
   userInputs.criteriaNumeric = includeNumeric;
   userInputs.criteriaSpecialChar = includeSpecialChar;
+
+  for (var i = 0; i < userInputs.criteriaPromptObj.length; i++) {
+    
+  }
 
   // Section for later use: final output to writePassword function
   var finalPassword =
