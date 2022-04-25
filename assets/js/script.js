@@ -37,51 +37,39 @@ var promptSequence = function () {
     userInputs.criteriaPasswordLength = passwordLength;
   } while (userInputs.criteriaPasswordLength < 8 || userInputs.criteriaPasswordLength > 128);
 
-  // Prompts for character types criteria
-  var charTypePrompts = function () {
-    // Prompts user with criteria options, reiterates through object length using Object.keys
-    for (var i = 0; i < Object.keys(userInputs.promptAnswers).length; i++) {
-      // Declares property key of each iteration through promptAnswers obj's index. (nested in obj userInputs)
-      var criteriaAnswerKey = Object.keys(userInputs.promptAnswers)[i];
-      console.log('Prompt for property: ' + criteriaAnswerKey + '. Expecting a boolean response.');
-      // Declares the string value of each property.
-      var criteriaQuestionText = userInputs.promptQuestions[criteriaAnswerKey];
+  // Prompts user with criteria options, reiterates through object length using Object.keys
+  for (var i = 0; i < Object.keys(userInputs.promptAnswers).length; i++) {
+    // Declares property key of each iteration through promptAnswers obj's index. (nested in obj userInputs)
+    var criteriaAnswerKey = Object.keys(userInputs.promptAnswers)[i];
+    console.log('Prompt for property: ' + criteriaAnswerKey + '. Expecting a boolean response.');
+    // Declares the string value of each property.
+    var criteriaQuestionText = userInputs.promptQuestions[criteriaAnswerKey];
 
-      // Declaring response as a boolean forcing a promptto capture criteria user choice
-      var promptBooleanResponse = confirm(criteriaQuestionText);
+    // Declaring response as a boolean forcing a prompt to capture criteria user choice
+    var promptBooleanResponse = confirm(criteriaQuestionText);
 
-      // Save user response to promptAnswers obj.
-      var userAnswer = userInputs.promptAnswers[criteriaAnswerKey];
-      userAnswer = promptBooleanResponse;
-      console.log('Answer given to ' + criteriaAnswerKey + ' is: ' + userAnswer + '\n');
+    // Save user response to promptAnswers obj.
+    var userAnswer = promptBooleanResponse;
+    userInputs.promptAnswers[criteriaAnswerKey] = userAnswer;
+    console.log('Answer given to ' + criteriaAnswerKey + ' is: ' + userAnswer + '\n');
+    // Validates user input
+    if (userAnswer) {
+      alert('You\'ve chosen to include ' + criteriaAnswerKey + ' in your criteria. This will generate a stronger password.');
+    } else {
+      alert('You\'ve chosen NOT to include ' + criteriaAnswerKey + ' in your criteria. This will generate a weaker password and increases security threats.');
     }
-
-    console.log(userInputs.promptAnswers.criteriaLowercase);
-    console.log(userInputs.promptAnswers.criteriaUppercase);
-    console.log(userInputs.promptAnswers.criteriaNumeric);
-    console.log(userInputs.promptAnswers.criteriaSpecialChar);
-
-    
-    // // Character type prompts
-    // var useLowercase = confirm("Include lowercase letters in your custom password? (abc)");
-    // var useUppercase = confirm("Include uppercase letters in your custom password? (ABC)");
-    // var useNumeric = confirm("Include numbers in your custom password? (123)");
-    // var useSpecialChar = confirm("Include special characters in your custom password? (!?*)");
-    // // Save answers into prompt object property: promptAnswers
-    // userInputs.promptAnswers.criteriaLowercase = useLowercase;
-    // userInputs.promptAnswers.criteriaUppercase = useUppercase;
-    // userInputs.promptAnswers.criteriaNumeric = useNumeric;
-    // userInputs.promptAnswers.criteriaSpecialChar = useSpecialChar;
-
-    // Checks if user didn't select a single char type
-    if (!choices.criteriaLowercase && !choices.criteriaUppercase && !choices.criteriaNumeric && !choices.criteriaSpecialChar) {
-        alert("You have to select at least one character type to generate a password.");
-        promptSequence();
-    }
-    
   }
 
-  charTypePrompts();
+  console.log(userInputs.promptAnswers.criteriaLowercase);
+  console.log(userInputs.promptAnswers.criteriaUppercase);
+  console.log(userInputs.promptAnswers.criteriaNumeric);
+  console.log(userInputs.promptAnswers.criteriaSpecialChar);
+
+  // Validates if user selects at least 1 char type
+  if (!choices.criteriaLowercase && !choices.criteriaUppercase && !choices.criteriaNumeric && !choices.criteriaSpecialChar) {
+      alert("You have to select at least one character type to generate a password.");
+      promptSequence();
+  }
 }
 
 /* GENERATE PASSWORD */
