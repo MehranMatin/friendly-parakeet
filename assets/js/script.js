@@ -1,28 +1,32 @@
 // Assignment code here
 var userInputs = {
   criteriaPasswordLength: "",
+  promptQuestions: {
+    criteriaLowercase: "Include lowercase letters in your custom password? (abc)",
+    criteriaUppercase: "Include uppercase letters in your custom password? (ABC)",
+    criteriaNumeric: "Include numbers in your custom password? (123)",
+    criteriaSpecialChar: "Include special characters in your custom password? (!?*)",
+  },
   promptAnswers: {
     criteriaLowercase: false,
     criteriaUppercase: false,
     criteriaNumeric: false,
     criteriaSpecialChar: false,
   },
-  criteriaArr: [],
+  savedCriteriaArr: [],
+  newPassword: "Bogus_Code",
   randomizeType: function () {
     // possible way to select a random type for each char
   },
   randomizeChar: function () {
     // possible way to select a random char from type
   },
-  saveUserCriteria: function (answer) {
-    // Possible function to pull answers from prompts into object
-  }
 }
 console.log(userInputs);
 
 /* PASSWORD CRITERIA PROMPT */
 var promptSequence = function () {
-  var userChoices = userInputs.promptAnswers;
+  var choices = userInputs.promptAnswers;
 
   // Prompts begin with instructions alert
   window.alert("Decide which types of characters to include in your generated password.");
@@ -33,28 +37,51 @@ var promptSequence = function () {
     userInputs.criteriaPasswordLength = passwordLength;
   } while (userInputs.criteriaPasswordLength < 8 || userInputs.criteriaPasswordLength > 128);
 
-  // Prompts user with various criteria 
-  for (var i = 0; i < userInputs.promptAnswers.length; i++) {
-    console.log(hello);
-  }
-
-  if (!userChoices.criteriaLowercase && !userChoices.criteriaUppercase && !userChoices.criteriaNumeric && !userChoices.criteriaSpecialChar) {
-      alert("You have to select at least one character type to generate a password.");
-      promptSequence;
-  }
-
-
-
   // Prompts for character types criteria
-  var includeLowercase = confirm("Include lowercase letters in your custom password? (abc)");
-  var includeUppercase = confirm("Include uppercase letters in your custom password? (ABC)");
-  var includeNumeric = confirm("Include numbers in your custom password? (123)");
-  var includeSpecialChar = confirm("Include special characters in your custom password? (!?*)");
+  var charTypePrompts = function () {
+    // Prompts user with criteria options, reiterates through object length using Object.keys
+    for (var i = 0; i < Object.keys(userInputs.promptAnswers).length; i++) {
+      // Declares property key of each iteration through promptAnswers obj's index. (nested in obj userInputs)
+      var criteriaAnswerKey = Object.keys(userInputs.promptAnswers)[i];
+      console.log('Prompt for property: ' + criteriaAnswerKey + '. Expecting a boolean response.');
+      // Declares the string value of each property.
+      var criteriaQuestionText = userInputs.promptQuestions[criteriaAnswerKey];
 
-  userInputs.promptAnswers.criteriaLowercase = includeLowercase;
-  userInputs.promptAnswers.criteriaUppercase = includeUppercase;
-  userInputs.promptAnswers.criteriaNumeric = includeNumeric;
-  userInputs.promptAnswers.criteriaSpecialChar = includeSpecialChar;
+      // Declaring response as a boolean forcing a promptto capture criteria user choice
+      var promptBooleanResponse = confirm(criteriaQuestionText);
+
+      // Save user response to promptAnswers obj.
+      var userAnswer = userInputs.promptAnswers[criteriaAnswerKey];
+      userAnswer = promptBooleanResponse;
+      console.log('Answer given to ' + criteriaAnswerKey + ' is: ' + userAnswer + '\n');
+    }
+
+    console.log(userInputs.promptAnswers.criteriaLowercase);
+    console.log(userInputs.promptAnswers.criteriaUppercase);
+    console.log(userInputs.promptAnswers.criteriaNumeric);
+    console.log(userInputs.promptAnswers.criteriaSpecialChar);
+
+    
+    // // Character type prompts
+    // var useLowercase = confirm("Include lowercase letters in your custom password? (abc)");
+    // var useUppercase = confirm("Include uppercase letters in your custom password? (ABC)");
+    // var useNumeric = confirm("Include numbers in your custom password? (123)");
+    // var useSpecialChar = confirm("Include special characters in your custom password? (!?*)");
+    // // Save answers into prompt object property: promptAnswers
+    // userInputs.promptAnswers.criteriaLowercase = useLowercase;
+    // userInputs.promptAnswers.criteriaUppercase = useUppercase;
+    // userInputs.promptAnswers.criteriaNumeric = useNumeric;
+    // userInputs.promptAnswers.criteriaSpecialChar = useSpecialChar;
+
+    // Checks if user didn't select a single char type
+    if (!choices.criteriaLowercase && !choices.criteriaUppercase && !choices.criteriaNumeric && !choices.criteriaSpecialChar) {
+        alert("You have to select at least one character type to generate a password.");
+        promptSequence();
+    }
+    
+  }
+
+  charTypePrompts();
 }
 
 /* GENERATE PASSWORD */
@@ -62,7 +89,7 @@ var generatePassword = function () {
   promptSequence();
 
   // Section for later use: final output to writePassword function
-  var finalPassword = "Still Testing";
+  var finalPassword = userInputs.newPassword;
   return finalPassword;
 }
 
