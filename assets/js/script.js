@@ -18,7 +18,7 @@ var userInputs = {
     uppercaseLetters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
     numericCharacters: "0123456789",
     specialCharacters: "~!@#$%^&*()_+=-",
-    activeCharTypes: ""
+    chosenCharTypes: "TESTING!!!"
   },
   newPassword: "Bogus_Code",
   randomizeType: function () {
@@ -27,7 +27,7 @@ var userInputs = {
   randomizeChar: function () {
     // possible way to select a random char from type
   },
-}
+} 
 console.log(userInputs);
 
 /* PASSWORD CRITERIA PROMPT */
@@ -35,7 +35,7 @@ var promptSequence = function () {
   var choices = userInputs.promptAnswers;
 
   // Prompts begin with instructions alert
-  window.alert("Decide which types of characters to include in your generated password.");
+  window.alert("Decide which types of characters to include in your new password.");
 
   // Prompts user for desired password length
   do {
@@ -78,10 +78,32 @@ var promptSequence = function () {
   }
 }
 
+/* COMBINES CHOSEN USER CRITERIAS TO SINGLE PROPERTY */
+
+var combineWantedChars = function () {
+  // Property for holding chosen char types
+  var chosenChars = userInputs.charTypes.chosenCharTypes;
+
+  // Each character type object property, index is iterated through
+  
+  // For each obj property in charTypes except the last (wantedCharTypes) gets iterated through
+  for (var i = 0; i < (Object.keys(userInputs.charTypes).length - 1); i++) {
+    // If property value is true concatonate to wantedCharTypes
+    if (Object.keys(userInputs.charTypes)[i].values) {
+      chosenChars.concat(Object.keys(userInputs.charTypes)[i]);
+    }
+  }
+  console.log(chosenChars);
+}
+
 /* GENERATE PASSWORD */
 var generatePassword = function () {
   promptSequence();
 
+  // do while || if statement || for each
+  // push strings from userInputs.charTypes[0-4] into userInputs.charTypes[5] and concatonate into matching userInputs.promptAnswers is true
+  combineWantedChars();
+  
   // Section for later use: final output to writePassword function
   var finalPassword = userInputs.newPassword;
   return finalPassword;
