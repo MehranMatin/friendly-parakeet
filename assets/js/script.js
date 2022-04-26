@@ -1,4 +1,4 @@
-// Assignment code here
+/* PASSWORD OBJECT */
 var userInputs = {
   criteriaPasswordLength: "",
   promptQuestions: {
@@ -13,7 +13,13 @@ var userInputs = {
     criteriaNumeric: false,
     criteriaSpecialChar: false,
   },
-  savedCriteriaArr: [],
+  charTypes: {
+    lowercaseLetters: "abcdefghijklmnopqrstuvwxyz",
+    uppercaseLetters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    numericCharacters: "0123456789",
+    specialCharacters: "~!@#$%^&*()_+=-",
+    activeCharTypes: ""
+  },
   newPassword: "Bogus_Code",
   randomizeType: function () {
     // possible way to select a random type for each char
@@ -67,7 +73,7 @@ var promptSequence = function () {
 
   // Validates if user selects at least 1 char type
   if (!choices.criteriaLowercase && !choices.criteriaUppercase && !choices.criteriaNumeric && !choices.criteriaSpecialChar) {
-      alert("You have to select at least one character type to generate a password.");
+      alert("You're required to select at least one character type to generate a password.");
       promptSequence();
   }
 }
