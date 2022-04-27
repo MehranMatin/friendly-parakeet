@@ -2,10 +2,10 @@
 var userInputs = {
   criteriaPasswordLength: "",
   promptQuestions: {
-    criteriaLowercase: "Include lowercase letters in your custom password? (abc)",
-    criteriaUppercase: "Include uppercase letters in your custom password? (ABC)",
-    criteriaNumeric: "Include numbers in your custom password? (123)",
-    criteriaSpecialChar: "Include special characters in your custom password? (!?*)",
+    criteriaLowercase: "Would you like to include lowercase letters in your custom password? (abc)",
+    criteriaUppercase: "Would you like to include uppercase letters in your custom password? (ABC)",
+    criteriaNumeric: "Would you like to include numbers in your custom password? (123)",
+    criteriaSpecialChar: "Would you like to include special characters in your custom password? (!?*)",
   },
   promptAnswers: {
     criteriaLowercase: false,
@@ -18,9 +18,9 @@ var userInputs = {
     uppercaseLetters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
     numericCharacters: "0123456789",
     specialCharacters: "~!@#$%^&*()_+=-",
-    chosenCharTypes: "TESTING!!!"
+    combineIntoPassword: ""
   },
-  newPassword: "Bogus_Code",
+  newPassword: "OUT OF ORDER",
   randomizeType: function () {
     // possible way to select a random type for each char
   },
@@ -30,24 +30,28 @@ var userInputs = {
 } 
 console.log(userInputs);
 
+/* INITIALIZE GLOBAL VARIABLES */
+// Property which holds user's choices (string)
+var chosenChars = userInputs.charTypes.combineIntoPassword;
+
 /* PASSWORD CRITERIA PROMPT */
 var promptSequence = function () {
   var choices = userInputs.promptAnswers;
-
-  // Prompts begin with instructions alert
-  window.alert("Decide which types of characters to include in your new password.");
 
   // Prompts user for desired password length
   do {
     var passwordLength = parseInt(window.prompt("First, choose a password length between 8-128 characters.", 8));
     userInputs.criteriaPasswordLength = passwordLength;
   } while (userInputs.criteriaPasswordLength < 8 || userInputs.criteriaPasswordLength > 128);
+  
+  // Prompts begin with instructions alert
+  window.alert("Decide which types of characters to include in your new password.");
 
   // Prompts user with criteria options, reiterates through object length using Object.keys
   for (var i = 0; i < Object.keys(userInputs.promptAnswers).length; i++) {
     // Declares property key of each iteration through promptAnswers obj's index. (nested in obj userInputs)
     var criteriaAnswerKey = Object.keys(userInputs.promptAnswers)[i];
-    console.log('Prompt for property: ' + criteriaAnswerKey + '. Expecting a boolean response.');
+    console.log('Prompt for property: ' + criteriaAnswerKey + '.\nExpecting a boolean response.');
     // Declares the string value of each property.
     var criteriaQuestionText = userInputs.promptQuestions[criteriaAnswerKey];
 
@@ -60,9 +64,9 @@ var promptSequence = function () {
     console.log('Answer given to ' + criteriaAnswerKey + ' is: ' + userAnswer + '\n');
     // Validates user input
     if (userAnswer) {
-      alert('You\'ve chosen to include ' + criteriaAnswerKey + ' in your criteria. This will generate a stronger password.');
+      alert('You\'ve chosen to include ' + Object.keys(userInputs.promptAnswers)[i] + ' in your criteria. This will generate a stronger password.');
     } else {
-      alert('You\'ve chosen NOT to include ' + criteriaAnswerKey + ' in your criteria. This will generate a weaker password and increases security threats.');
+      alert('You\'ve chosen NOT to include ' + Object.keys(userInputs.promptAnswers)[i] + ' in your criteria. This will generate a weaker password and increases security threats.');
     }
   }
 
@@ -79,30 +83,33 @@ var promptSequence = function () {
 }
 
 /* COMBINES CHOSEN USER CRITERIAS TO SINGLE PROPERTY */
-
 var combineWantedChars = function () {
-  // Property for holding chosen char types
-  var chosenChars = userInputs.charTypes.chosenCharTypes;
-
+  var charTypeKeys = Object.keys(userInputs.charTypes);
   // Each character type object property, index is iterated through
-  
   // For each obj property in charTypes except the last (wantedCharTypes) gets iterated through
-  for (var i = 0; i < (Object.keys(userInputs.charTypes).length - 1); i++) {
+  for (var i = 0; i < (charTypeKeys.length - 1); i++) {
     // If property value is true concatonate to wantedCharTypes
-    if (Object.keys(userInputs.charTypes)[i].values) {
-      chosenChars.concat(Object.keys(userInputs.charTypes)[i]);
+    if (charTypeKeys[i].values) {
+      chosenChars.concat(charTypeKeys[i]);
     }
   }
   console.log(chosenChars);
 }
 
+/* GENERATE RANDOM CHARACTER */
+var genRandomChar = function () {
+  userInputs.newPassword += chosenChars.charAt(Math.floor(Math.random() * chosenChars.length));
+  console.log('Random Character: ' + userInputs.newPassword);
+}
+
 /* GENERATE PASSWORD */
 var generatePassword = function () {
+  // ask pw criteria
   promptSequence();
-
-  // do while || if statement || for each
-  // push strings from userInputs.charTypes[0-4] into userInputs.charTypes[5] and concatonate into matching userInputs.promptAnswers is true
+  // combine selected criteria into a single string
   combineWantedChars();
+  // select a random character from combined string
+  genRandomChar();
   
   // Section for later use: final output to writePassword function
   var finalPassword = userInputs.newPassword;
@@ -118,7 +125,7 @@ function writePassword() {
   var passwordText = document.querySelector("#password");
 
   passwordText.value = password;
-  console.log(passwordText.value);
+  console.log('Password Displayed: ' + passwordText.value);
 }
 
 // Add event listener to generate button
