@@ -18,7 +18,7 @@ var userInputs = {
     uppercaseLetters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
     numericCharacters: "0123456789",
     specialCharacters: "~!@#$%^&*()_+=-",
-    combinedChars: "@123"
+    combinedCharTypeCriteria: "@123"
   },
   newPassword: "",
   randomizeType: function () {
@@ -32,7 +32,7 @@ console.log(userInputs);
 
 /* INITIALIZE GLOBAL VARIABLES */
 // Property which holds user's choices (string)
-var combinedChars = userInputs.charTypes.combinedChars;
+var combinedCharTypeCriteria = userInputs.charTypes.combinedCharTypeCriteria;
 // Object with prompt sequence results 
 var selectedCharTypes = userInputs.promptAnswers;
 
@@ -82,25 +82,23 @@ var promptSequence = function () {
 var combineWantedChars = function () {
   // character type keys
   var charTypeKey = Object.keys(userInputs.charTypes);
-  // Iterate through property's index length minus the last property (.combinedChars)
+  // Iterate through property's index length minus the last property (.combinedCharTypeCriteria)
   for (var i = 0; i < (charTypeKey.length - 1); i++) {
-    // If property value is true add its string to .combinedChars
+    // If property value is true add its string to .combinedCharTypeCriteria
     if (charTypeKey[i]) {
-      combinedChars += userInputs.charTypes[charTypeKey[i]];
+      combinedCharTypeCriteria += userInputs.charTypes[charTypeKey[i]];
     }
   }
-  console.log(combinedChars);
+  console.log(combinedCharTypeCriteria);
 }
 
 /* RANDOM STRING FUNCTION */
-var genRandomChar = function () {
+var genRandomString = function () {
   // Iterate by user's chosen password length.
   for (var i = 0; i < userInputs.criteriaPasswordLength; i++) {
     // random number picks a character by index using charAt() then adds it to newPassword to form random string
-    userInputs.newPassword += combinedChars.charAt(Math.floor(Math.random() * combinedChars.length));
+    userInputs.newPassword += combinedCharTypeCriteria.charAt(Math.floor(Math.random() * combinedCharTypeCriteria.length));
   }
-  console.log('New Generated Password: ' + userInputs.newPassword);
-  // return(newPassword);
 }
 
 /* GENERATE PASSWORD */
@@ -110,13 +108,14 @@ var generatePassword = function () {
   // combine selected criteria into a single string
   combineWantedChars();
   // select a random character from combined string
-  genRandomChar();
+  genRandomString();
   
   // Section for later use: final output to writePassword function
   var finalPassword = userInputs.newPassword;
   return finalPassword;
 }
 
+/* Starter Code */
 // Get references to the #generate element
 var generateBtn = document.querySelector("#generate");
 
